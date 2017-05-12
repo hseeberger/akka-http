@@ -22,13 +22,13 @@ import akka.stream.ActorMaterializer;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Sink;
 import akka.http.javadsl.model.ServerSentEvent;
-import akka.http.javadsl.unmarshalling.EventStreamUnmarshalling;
 import akka.http.scaladsl.unmarshalling.EventStreamUnmarshallingSpec;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.scalatest.junit.JUnitSuite;
+import static scala.compat.java8.FutureConverters.toJava;
 
 public class EventStreamUnmarshallingTest extends JUnitSuite {
 
@@ -50,7 +50,7 @@ public class EventStreamUnmarshallingTest extends JUnitSuite {
 
             Assert.assertEquals(events, unmarshalledEvents);
         } finally {
-            system.terminate();
+            toJava(system.terminate()).toCompletableFuture().get(42, TimeUnit.SECONDS);
         }
     }
 }
