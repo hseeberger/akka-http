@@ -96,7 +96,7 @@ public abstract class ServerSentEvent {
     /**
      * Optional type, must not contain \n or \r.
      */
-    public abstract Optional<String> getType();
+    public abstract Optional<String> getEventType();
 
     /**
      * Optional id, must not contain \n or \r.

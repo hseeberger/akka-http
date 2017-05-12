@@ -42,7 +42,7 @@ public class EventStreamMarshallingTest extends JUnitRouteTest {
         final ByteString expectedEntity = events
                 .stream()
                 .map(e -> ((akka.http.scaladsl.model.ServerSentEvent) e).encode())
-                .reduce(ByteString.empty(), ByteString::$plus$plus);
+                .reduce(ByteString.empty(), ByteString::concat);
         final TestRouteResult routeResult = testRoute(route).run(GET("/"));
         routeResult.assertMediaType(TEXT_EVENT_STREAM);
         routeResult.assertEquals(expectedEntity, routeResult.entityBytes(), "Entity should carry events!");

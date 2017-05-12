@@ -1,6 +1,7 @@
 /**
  * Copyright (C) 2009-2017 Lightbend Inc. <http://www.lightbend.com>
  */
+
 package akka.http.scaladsl.model
 
 import akka.http.impl.util._
@@ -30,10 +31,7 @@ import akka.http.impl.util.JavaMapping.Implicits._
  *    [[ContentType]]. The most prominent example is probably `application/json` which must always be UTF-8 encoded.
  *    Like binary MediaTypes `WithFixedCharset` types can be implicitly converted to a [[ContentType]].
  */
-sealed abstract class MediaType
-  extends jm.MediaType
-  with LazyValueBytesRenderable
-  with WithQValue[MediaRange] {
+sealed abstract class MediaType extends jm.MediaType with LazyValueBytesRenderable with WithQValue[MediaRange] {
   import MediaType.Compressibility
 
   def fileExtensions: List[String]
@@ -70,137 +68,58 @@ sealed abstract class MediaType
 
 object MediaType {
 
-  def applicationBinary(
-    subType:        String,
-    comp:           Compressibility,
-    fileExtensions: String*): Binary =
-    new Binary(
-      "application/" + subType,
-      "application",
-      subType,
-      comp,
-      fileExtensions.toList) {
+  def applicationBinary(subType: String, comp: Compressibility, fileExtensions: String*): Binary =
+    new Binary("application/" + subType, "application", subType, comp, fileExtensions.toList) {
       override def isApplication = true
     }
 
-  def applicationWithFixedCharset(
-    subType:        String,
-    charset:        HttpCharset,
-    fileExtensions: String*): WithFixedCharset =
-    new WithFixedCharset(
-      "application/" + subType,
-      "application",
-      subType,
-      charset,
-      fileExtensions.toList) {
+  def applicationWithFixedCharset(subType: String, charset: HttpCharset,
+                                  fileExtensions: String*): WithFixedCharset =
+    new WithFixedCharset("application/" + subType, "application", subType, charset, fileExtensions.toList) {
       override def isApplication = true
     }
 
-  def applicationWithOpenCharset(
-    subType:        String,
-    fileExtensions: String*): WithOpenCharset =
-    new NonMultipartWithOpenCharset(
-      "application/" + subType,
-      "application",
-      subType,
-      fileExtensions.toList) {
+  def applicationWithOpenCharset(subType: String, fileExtensions: String*): WithOpenCharset =
+    new NonMultipartWithOpenCharset("application/" + subType, "application", subType, fileExtensions.toList) {
       override def isApplication = true
     }
 
-  def audio(
-    subType:        String,
-    comp:           Compressibility,
-    fileExtensions: String*): Binary =
-    new Binary(
-      "audio/" + subType,
-      "audio",
-      subType,
-      comp,
-      fileExtensions.toList) {
+  def audio(subType: String, comp: Compressibility, fileExtensions: String*): Binary =
+    new Binary("audio/" + subType, "audio", subType, comp, fileExtensions.toList) {
       override def isAudio = true
     }
 
-  def image(
-    subType:        String,
-    comp:           Compressibility,
-    fileExtensions: String*): Binary =
-    new Binary(
-      "image/" + subType,
-      "image",
-      subType,
-      comp,
-      fileExtensions.toList) {
+  def image(subType: String, comp: Compressibility, fileExtensions: String*): Binary =
+    new Binary("image/" + subType, "image", subType, comp, fileExtensions.toList) {
       override def isImage = true
     }
 
-  def message(
-    subType:        String,
-    comp:           Compressibility,
-    fileExtensions: String*): Binary =
-    new Binary(
-      "message/" + subType,
-      "message",
-      subType,
-      comp,
-      fileExtensions.toList) {
+  def message(subType: String, comp: Compressibility, fileExtensions: String*): Binary =
+    new Binary("message/" + subType, "message", subType, comp, fileExtensions.toList) {
       override def isMessage = true
     }
 
   def text(subType: String, fileExtensions: String*): WithOpenCharset =
-    new NonMultipartWithOpenCharset(
-      "text/" + subType,
-      "text",
-      subType,
-      fileExtensions.toList) {
+    new NonMultipartWithOpenCharset("text/" + subType, "text", subType, fileExtensions.toList) {
       override def isText = true
     }
 
-  def textWithFixedCharset(
-    subType:        String,
-    charset:        HttpCharset,
-    fileExtensions: String*): WithFixedCharset =
-    new WithFixedCharset(
-      "text/" + subType,
-      "text",
-      subType,
-      charset,
-      fileExtensions.toList) {
+  def textWithFixedCharset(subType: String, charset: HttpCharset, fileExtensions: String*): WithFixedCharset =
+    new WithFixedCharset("text/" + subType, "text", subType, charset, fileExtensions.toList) {
       override def isText = true
     }
 
-  def video(
-    subType:        String,
-    comp:           Compressibility,
-    fileExtensions: String*): Binary =
-    new Binary(
-      "video/" + subType,
-      "video",
-      subType,
-      comp,
-      fileExtensions.toList) {
+  def video(subType: String, comp: Compressibility, fileExtensions: String*): Binary =
+    new Binary("video/" + subType, "video", subType, comp, fileExtensions.toList) {
       override def isVideo = true
     }
 
-  def customBinary(
-    mainType:               String,
-    subType:                String,
-    comp:                   Compressibility,
-    fileExtensions:         List[String]        = Nil,
-    params:                 Map[String, String] = Map.empty,
-    allowArbitrarySubtypes: Boolean             = false): Binary = {
-    require(
-      mainType != "multipart",
-      "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
-    require(
-      allowArbitrarySubtypes || subType != "*",
-      "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
+  def customBinary(mainType: String, subType: String, comp: Compressibility, fileExtensions: List[String] = Nil,
+                   params: Map[String, String] = Map.empty, allowArbitrarySubtypes: Boolean = false): Binary = {
+    require(mainType != "multipart", "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
+    require(allowArbitrarySubtypes || subType != "*", "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
     val _params = params
-    new Binary(
-      renderValue(mainType, subType, params),
-      mainType,
-      subType,
-      comp,
-      fileExtensions) {
+    new Binary(renderValue(mainType, subType, params), mainType, subType, comp, fileExtensions) {
       override def params = _params
       override def isApplication = mainType == "application"
       override def isAudio = mainType == "audio"
@@ -211,26 +130,13 @@ object MediaType {
     }
   }
 
-  def customWithFixedCharset(
-    mainType:               String,
-    subType:                String,
-    charset:                HttpCharset,
-    fileExtensions:         List[String]        = Nil,
-    params:                 Map[String, String] = Map.empty,
-    allowArbitrarySubtypes: Boolean             = false): WithFixedCharset = {
-    require(
-      mainType != "multipart",
-      "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
-    require(
-      allowArbitrarySubtypes || subType != "*",
-      "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
+  def customWithFixedCharset(mainType: String, subType: String, charset: HttpCharset, fileExtensions: List[String] = Nil,
+                             params:                 Map[String, String] = Map.empty,
+                             allowArbitrarySubtypes: Boolean             = false): WithFixedCharset = {
+    require(mainType != "multipart", "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
+    require(allowArbitrarySubtypes || subType != "*", "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
     val _params = params
-    new WithFixedCharset(
-      renderValue(mainType, subType, params),
-      mainType,
-      subType,
-      charset,
-      fileExtensions) {
+    new WithFixedCharset(renderValue(mainType, subType, params), mainType, subType, charset, fileExtensions) {
       override def params = _params
       override def isApplication = mainType == "application"
       override def isAudio = mainType == "audio"
@@ -241,24 +147,13 @@ object MediaType {
     }
   }
 
-  def customWithOpenCharset(
-    mainType:               String,
-    subType:                String,
-    fileExtensions:         List[String]        = Nil,
-    params:                 Map[String, String] = Map.empty,
-    allowArbitrarySubtypes: Boolean             = false): WithOpenCharset = {
-    require(
-      mainType != "multipart",
-      "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
-    require(
-      allowArbitrarySubtypes || subType != "*",
-      "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
+  def customWithOpenCharset(mainType: String, subType: String, fileExtensions: List[String] = Nil,
+                            params:                 Map[String, String] = Map.empty,
+                            allowArbitrarySubtypes: Boolean             = false): WithOpenCharset = {
+    require(mainType != "multipart", "Cannot create a MediaType.Multipart here, use `customMultipart` instead!")
+    require(allowArbitrarySubtypes || subType != "*", "Cannot create a MediaRange here, use `MediaRange.custom` instead!")
     val _params = params
-    new NonMultipartWithOpenCharset(
-      renderValue(mainType, subType, params),
-      mainType,
-      subType,
-      fileExtensions) {
+    new NonMultipartWithOpenCharset(renderValue(mainType, subType, params), mainType, subType, fileExtensions) {
       override def params = _params
       override def isApplication = mainType == "application"
       override def isAudio = mainType == "audio"
@@ -269,24 +164,15 @@ object MediaType {
     }
   }
 
-  def customMultipart(
-    subType: String,
-    params:  Map[String, String]): Multipart = {
-    require(
-      subType != "*",
-      "Cannot create a MediaRange here, use MediaRanges.`multipart/*` instead!")
+  def customMultipart(subType: String, params: Map[String, String]): Multipart = {
+    require(subType != "*", "Cannot create a MediaRange here, use MediaRanges.`multipart/*` instead!")
     new Multipart(subType, params)
   }
 
-  def custom(
-    value:          String,
-    binary:         Boolean,
-    comp:           Compressibility = Compressible,
-    fileExtensions: List[String]    = Nil): MediaType = {
+  def custom(value: String, binary: Boolean, comp: Compressibility = Compressible,
+             fileExtensions: List[String] = Nil): MediaType = {
     val parts = value.split('/')
-    require(
-      parts.length == 2,
-      s"`$value` is not a valid media-type. It must consist of two parts separated by '/'.")
+    require(parts.length == 2, s"`$value` is not a valid media-type. It must consist of two parts separated by '/'.")
     if (binary) customBinary(parts(0), parts(1), comp, fileExtensions)
     else customWithOpenCharset(parts(0), parts(1), fileExtensions)
   }
@@ -302,25 +188,14 @@ object MediaType {
 
   /////////////////////////////////////////////////////////////////////////
 
-  private def renderValue(
-    mainType: String,
-    subType:  String,
-    params:   Map[String, String]): String = {
+  private def renderValue(mainType: String, subType: String, params: Map[String, String]): String = {
     val r = new StringRendering ~~ mainType ~~ '/' ~~ subType
-    if (params.nonEmpty) params foreach {
-      case (k, v) ⇒ r ~~ ';' ~~ ' ' ~~ k ~~ '=' ~~# v
-    }
+    if (params.nonEmpty) params foreach { case (k, v) ⇒ r ~~ ';' ~~ ' ' ~~ k ~~ '=' ~~# v }
     r.get
   }
 
-  sealed abstract class Binary(
-    val value:          String,
-    val mainType:       String,
-    val subType:        String,
-    val comp:           Compressibility,
-    val fileExtensions: List[String])
-    extends MediaType
-    with jm.MediaType.Binary {
+  sealed abstract class Binary(val value: String, val mainType: String, val subType: String, val comp: Compressibility,
+                               val fileExtensions: List[String]) extends MediaType with jm.MediaType.Binary {
     def binary = true
     def params: Map[String, String] = Map.empty
     def withParams(params: Map[String, String]): Binary with MediaType =
@@ -334,32 +209,19 @@ object MediaType {
     def toContentType: ContentType.Binary = ContentType(this)
   }
 
-  sealed abstract class NonBinary
-    extends MediaType
-    with jm.MediaType.NonBinary {
+  sealed abstract class NonBinary extends MediaType with jm.MediaType.NonBinary {
     def binary = false
     def comp = Compressible
     def withComp(comp: Compressibility): Binary with MediaType =
       customBinary(mainType, subType, comp, fileExtensions, params)
   }
 
-  sealed abstract class WithFixedCharset(
-    val value:          String,
-    val mainType:       String,
-    val subType:        String,
-    val charset:        HttpCharset,
-    val fileExtensions: List[String])
-    extends NonBinary
-    with jm.MediaType.WithFixedCharset {
+  sealed abstract class WithFixedCharset(val value: String, val mainType: String, val subType: String,
+                                         val charset: HttpCharset, val fileExtensions: List[String])
+    extends NonBinary with jm.MediaType.WithFixedCharset {
     def params: Map[String, String] = Map.empty
-    def withParams(
-      params: Map[String, String]): WithFixedCharset with MediaType =
-      customWithFixedCharset(
-        mainType,
-        subType,
-        charset,
-        fileExtensions,
-        params)
+    def withParams(params: Map[String, String]): WithFixedCharset with MediaType =
+      customWithFixedCharset(mainType, subType, charset, fileExtensions, params)
 
     /**
      * JAVA API
@@ -367,51 +229,33 @@ object MediaType {
     def toContentType: ContentType.WithFixedCharset = ContentType(this)
   }
 
-  sealed abstract class WithOpenCharset
-    extends NonBinary
-    with jm.MediaType.WithOpenCharset {
-    def withCharset(charset: HttpCharset): ContentType.WithCharset =
-      ContentType(this, charset)
-    def withParams(
-      params: Map[String, String]): WithOpenCharset with MediaType =
+  sealed abstract class WithOpenCharset extends NonBinary with jm.MediaType.WithOpenCharset {
+    def withCharset(charset: HttpCharset): ContentType.WithCharset = ContentType(this, charset)
+    def withParams(params: Map[String, String]): WithOpenCharset with MediaType =
       customWithOpenCharset(mainType, subType, fileExtensions, params)
 
     /**
      * JAVA API
      */
-    def toContentType(charset: jm.HttpCharset): ContentType.WithCharset =
-      withCharset(charset.asScala)
+    def toContentType(charset: jm.HttpCharset): ContentType.WithCharset = withCharset(charset.asScala)
   }
 
-  sealed abstract class NonMultipartWithOpenCharset(
-    val value:          String,
-    val mainType:       String,
-    val subType:        String,
-    val fileExtensions: List[String])
-    extends WithOpenCharset {
+  sealed abstract class NonMultipartWithOpenCharset(val value: String, val mainType: String, val subType: String,
+                                                    val fileExtensions: List[String]) extends WithOpenCharset {
     def params: Map[String, String] = Map.empty
   }
 
   final class Multipart(subType: String, _params: Map[String, String])
-    extends Binary(
-      renderValue("multipart", subType, _params),
-      "multipart",
-      subType,
-      Compressible,
-      Nil)
+    extends Binary(renderValue("multipart", subType, _params), "multipart", subType, Compressible, Nil)
     with jm.MediaType.Multipart {
     override def params = _params
     override def isMultipart = true
-    override def withParams(params: Map[String, String]): MediaType.Multipart =
-      new MediaType.Multipart(subType, params)
+    override def withParams(params: Map[String, String]): MediaType.Multipart = new MediaType.Multipart(subType, params)
     def withBoundary(boundary: String): MediaType.Multipart =
-      withParams(
-        if (boundary.isEmpty) params - "boundary"
-        else params.updated("boundary", boundary))
+      withParams(if (boundary.isEmpty) params - "boundary" else params.updated("boundary", boundary))
   }
 
-  sealed class Compressibility(val compressible: Boolean)
-    extends jm.MediaType.Compressibility
+  sealed class Compressibility(val compressible: Boolean) extends jm.MediaType.Compressibility
   case object Compressible extends Compressibility(compressible = true)
   case object NotCompressible extends Compressibility(compressible = false)
   case object Gzipped extends Compressibility(compressible = false)
@@ -422,17 +266,13 @@ object MediaTypes extends ObjectRegistry[(String, String), MediaType] {
 
   private[this] var extensionMap = Map.empty[String, MediaType]
 
-  def forExtensionOption(ext: String): Option[MediaType] =
-    extensionMap.get(ext.toLowerCase)
-  def forExtension(ext: String): MediaType =
-    extensionMap.getOrElse(ext.toLowerCase, `application/octet-stream`)
+  def forExtensionOption(ext: String): Option[MediaType] = extensionMap.get(ext.toLowerCase)
+  def forExtension(ext: String): MediaType = extensionMap.getOrElse(ext.toLowerCase, `application/octet-stream`)
 
   private def registerFileExtensions[T <: MediaType](mediaType: T): T = {
     mediaType.fileExtensions.foreach { ext ⇒
       val lcExt = ext.toLowerCase
-      require(
-        !extensionMap.contains(lcExt),
-        s"Extension '$ext' clash: media-types '${extensionMap(lcExt)}' and '$mediaType'")
+      require(!extensionMap.contains(lcExt), s"Extension '$ext' clash: media-types '${extensionMap(lcExt)}' and '$mediaType'")
       extensionMap = extensionMap.updated(lcExt, mediaType)
     }
     mediaType
@@ -440,9 +280,7 @@ object MediaTypes extends ObjectRegistry[(String, String), MediaType] {
 
   private def register[T <: MediaType](mediaType: T): T = {
     registerFileExtensions(mediaType)
-    register(
-      mediaType.mainType.toRootLowerCase → mediaType.subType.toRootLowerCase,
-      mediaType)
+    register(mediaType.mainType.toRootLowerCase → mediaType.subType.toRootLowerCase, mediaType)
   }
 
   import MediaType._
@@ -457,7 +295,7 @@ object MediaTypes extends ObjectRegistry[(String, String), MediaType] {
   private def img(st: String, c: Compressibility, fe: String*)  = register(image(st, c, fe: _*))
   private def msg(st: String, fe: String*)                      = register(message(st, Compressible, fe: _*))
   private def txt(st: String, fe: String*)                      = register(text(st, fe: _*))
-  private def txtfc(st: String, cs: HttpCharset, fe: String*)                      = register(textWithFixedCharset(st, cs, fe: _*))
+  private def txtfc(st: String, cs: HttpCharset, fe: String*)   = register(textWithFixedCharset(st, cs, fe: _*))
   private def vid(st: String, fe: String*)                      = register(video(st, NotCompressible, fe: _*))
 
   // dummy value currently only used by ContentType.NoContentType

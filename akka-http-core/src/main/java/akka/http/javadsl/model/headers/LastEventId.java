@@ -25,6 +25,8 @@ public abstract class LastEventId extends akka.http.scaladsl.model.HttpHeader {
      * Creates a Last-Event-ID header.
      *
      * @param id ID of the last event, encoded as UTF-8 string
+     *
+     * @see akka.http.javadsl.model.ServerSentEvent
      */
     public static LastEventId create(String id) {
         return akka.http.scaladsl.model.headers.Last$minusEvent$minusID$.MODULE$.apply(id);

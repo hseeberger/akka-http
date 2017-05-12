@@ -80,19 +80,19 @@ object ServerSentEvent {
  * which is to be ignored which is useful for heartbeats.
  *
  * @param data data, may span multiple lines
- * @param type optional type, must not contain \n or \r
+ * @param eventType optional type, must not contain \n or \r
  * @param id optional id, must not contain \n or \r
  * @param retry optional reconnection delay in milliseconds
  */
 final case class ServerSentEvent(
-  data:   String,
-  `type`: Option[String] = None,
-  id:     Option[String] = None,
-  retry:  Option[Int]    = None)
+  data:      String,
+  eventType: Option[String] = None,
+  id:        Option[String] = None,
+  retry:     Option[Int]    = None)
   extends javadsl.model.ServerSentEvent {
   import ServerSentEvent._
 
-  require(`type`.forall(noNewLine), "type must not contain \\n or \\r!")
+  require(eventType.forall(noNewLine), "eventType must not contain \\n or \\r!")
   require(id.forall(noNewLine), "id must not contain \\n or \\r!")
   require(retry.forall(_ > 0), "retry must be a positive number!")
 
@@ -106,7 +106,7 @@ final case class ServerSentEvent(
       val builder =
         new StringBuilder(
           nextPowerOfTwoBiggerThan(
-            8 + data.length + `type`.fold(0)(_.length + 7) + id.fold(0)(_.length + 4) + retry.fold(0)(_ ⇒ 17)
+            8 + data.length + eventType.fold(0)(_.length + 7) + id.fold(0)(_.length + 4) + retry.fold(0)(_ ⇒ 17)
           )
         )
       @tailrec def appendData(s: String, index: Int = 0): Unit = {
@@ -125,7 +125,7 @@ final case class ServerSentEvent(
         }
       }
       appendData(data)
-      if (`type`.isDefined && `type`.get.nonEmpty) builder.append("event:").append(`type`.get).append('\n')
+      if (eventType.isDefined && eventType.get.nonEmpty) builder.append("event:").append(eventType.get).append('\n')
       if (id.isDefined) builder.append("id:").append(id.get).append('\n')
       if (retry.isDefined) builder.append("retry:").append(retry.get).append('\n')
       builder.append('\n').toString
@@ -135,7 +135,7 @@ final case class ServerSentEvent(
 
   override def getData = data
 
-  override def getType = `type`.asJava
+  override def getEventType = eventType.asJava
 
   override def getId = id.asJava
 
