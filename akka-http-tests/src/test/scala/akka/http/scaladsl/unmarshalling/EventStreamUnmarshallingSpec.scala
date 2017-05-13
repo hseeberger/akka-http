@@ -44,7 +44,7 @@ object EventStreamUnmarshallingSpec {
     HttpEntity(`text/event-stream`, Source(events).map(_.encode))
 }
 
-final class EventStreamUnmarshallingSpec extends AsyncWordSpec with Matchers with AkkaSpec {
+final class EventStreamUnmarshallingSpec extends AsyncWordSpec with Matchers with BaseUnmarshallingSpec {
   import EventStreamUnmarshalling._
   import EventStreamUnmarshallingSpec._
 

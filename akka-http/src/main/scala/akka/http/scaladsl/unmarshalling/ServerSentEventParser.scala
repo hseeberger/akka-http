@@ -33,7 +33,7 @@ private object ServerSentEventParser {
 
     private var data = Vector.empty[String]
 
-    private var `type` = Option.empty[String]
+    private var eventType = Option.empty[String]
 
     private var id = Option.empty[String]
 
@@ -47,9 +47,9 @@ private object ServerSentEventParser {
     }
 
     def setType(value: String): Unit = {
-      val oldSize = `type`.fold(0)(6 + _.length)
+      val oldSize = eventType.fold(0)(6 + _.length)
       _size += 6 + value.length - oldSize
-      `type` = Some(value)
+      eventType = Some(value)
     }
 
     def setId(value: String): Unit = {
@@ -71,11 +71,11 @@ private object ServerSentEventParser {
       _size
 
     def build(): ServerSentEvent =
-      ServerSentEvent(data.mkString("\n"), `type`, id, retry)
+      ServerSentEvent(data.mkString("\n"), eventType, id, retry)
 
     def reset(): Unit = {
       data = Vector.empty[String]
-      `type` = None
+      eventType = None
       id = None
       retry = None
       _size = 0
@@ -84,7 +84,7 @@ private object ServerSentEventParser {
 
   private final val Data = "data"
 
-  private final val Event = "event"
+  private final val EventType = "event"
 
   private final val Id = "id"
 
@@ -117,12 +117,12 @@ private final class ServerSentEventParser(maxEventSize: Int) extends GraphStage[
           builder.reset()
         } else if (builder.size + line.length <= maxEventSize) {
           line match {
-            case Id                                 ⇒ builder.setId("")
-            case field(Data, data) if data.nonEmpty ⇒ builder.appendData(data)
-            case field(Event, t) if t.nonEmpty      ⇒ builder.setType(t)
-            case field(Id, id)                      ⇒ builder.setId(id)
-            case field(Retry, s @ PosInt(retry))    ⇒ builder.setRetry(retry, s.length)
-            case _                                  ⇒ // ignore according to spec
+            case Id                                    ⇒ builder.setId("")
+            case field(Data, data) if data.nonEmpty    ⇒ builder.appendData(data)
+            case field(EventType, t) if t.nonEmpty     ⇒ builder.setType(t)
+            case field(Id, id)                         ⇒ builder.setId(id)
+            case field(Retry, s @ PosInt(r)) if r >= 0 ⇒ builder.setRetry(r, s.length)
+            case _                                     ⇒ // ignore according to spec
           }
           pull(in)
         } else {

@@ -22,7 +22,7 @@ import akka.stream.scaladsl.{ Sink, Source }
 import akka.http.scaladsl.model.ServerSentEvent
 import org.scalatest.{ AsyncWordSpec, Matchers }
 
-final class ServerSentEventParserSpec extends AsyncWordSpec with Matchers with AkkaSpec {
+final class ServerSentEventParserSpec extends AsyncWordSpec with Matchers with BaseUnmarshallingSpec {
 
   "A ServerSentEventParser" should {
     "parse ServerSentEvents correctly" in {

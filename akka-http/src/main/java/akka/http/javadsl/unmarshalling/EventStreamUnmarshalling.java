@@ -18,15 +18,18 @@ package akka.http.javadsl.unmarshalling;
 
 import akka.NotUsed;
 import akka.http.javadsl.model.HttpEntity;
-import akka.http.javadsl.unmarshalling.Unmarshaller;
 import akka.stream.javadsl.Source;
 import akka.http.javadsl.model.ServerSentEvent;
 
 /**
- * Using `eventStreamMarshaller` lets a source of [[ServerSentEvent]]s be marshalled to a `HttpResponse`.
+ * Using `fromEventStream` lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of
+ * `ServerSentEvent`s.
  */
 public abstract class EventStreamUnmarshalling {
 
+    /**
+     * Lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of `ServerSentEvent`s.
+     */
     public static Unmarshaller<HttpEntity, Source<ServerSentEvent, NotUsed>> fromEventStream() {
         return EventStreamUnmarshallingConverter$.MODULE$.fromEventStream();
     }

@@ -22,7 +22,7 @@ import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString
 import org.scalatest.{ AsyncWordSpec, Matchers }
 
-final class LineParserSpec extends AsyncWordSpec with Matchers with AkkaSpec {
+final class LineParserSpec extends AsyncWordSpec with Matchers with BaseUnmarshallingSpec {
 
   "A LineParser" should {
 
@@ -42,7 +42,7 @@ final class LineParserSpec extends AsyncWordSpec with Matchers with AkkaSpec {
         .map(_ shouldBe Vector("line1", "line2", "line3", "line4", "line5", "line6", ""))
     }
 
-    "parse a line splittet into many chunks" in {
+    "parse a line splitted into many chunks" in {
       Source(('a'.to('z') :+ '\n').map(ByteString(_)))
         .via(new LineParser(1048576))
         .runWith(Sink.seq)

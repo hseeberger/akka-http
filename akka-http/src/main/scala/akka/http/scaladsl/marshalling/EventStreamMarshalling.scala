@@ -30,7 +30,7 @@ import akka.http.scaladsl.model.ServerSentEvent
 object EventStreamMarshalling extends EventStreamMarshalling
 
 /**
- * Mixing in this trait lets a source of [[ServerSentEvent]]s be marshalled to a a `HttpEntity` and hence as a
+ * Mixing in this trait lets a source of [[ServerSentEvent]]s be marshalled to a `HttpEntity` and hence as a
  * `HttpResponse`.
  */
 trait EventStreamMarshalling {

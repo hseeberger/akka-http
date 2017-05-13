@@ -6,7 +6,7 @@ import org.scalatest.{ BeforeAndAfterAll, Suite }
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
-trait AkkaSpec extends BeforeAndAfterAll { this: Suite ⇒
+trait BaseUnmarshallingSpec extends BeforeAndAfterAll { this: Suite ⇒
 
   protected implicit val system: ActorSystem =
     ActorSystem()

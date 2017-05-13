@@ -16,7 +16,6 @@
 
 package akka.http.javadsl.marshalling;
 
-import akka.http.javadsl.marshalling.Marshaller;
 import akka.http.javadsl.model.RequestEntity;
 import akka.stream.javadsl.Source;
 import akka.http.javadsl.model.ServerSentEvent;
@@ -26,6 +25,9 @@ import akka.http.javadsl.model.ServerSentEvent;
  */
 public abstract class EventStreamMarshalling {
 
+    /**
+     * Lets a source of [[ServerSentEvent]]s be marshalled to a `HttpResponse`.
+     */
     public static <T> Marshaller<Source<ServerSentEvent, T>, RequestEntity> toEventStream() {
         return EventStreamMarshallingConverter$.MODULE$.toEventStream();
     }

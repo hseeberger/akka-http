@@ -38,7 +38,7 @@ object EventStreamUnmarshalling extends EventStreamUnmarshalling
  * Mixing in this trait lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of
  * [[ServerSentEvent]]s.
  *
- * The maximum size for parsing server-sent events is 8KiB dy default and can be customized by overriding
+ * The maximum size for parsing server-sent events is 8KiB by default and can be customized by overriding
  * [[EventStreamUnmarshalling.maxEventSize]]. The maximum size for parsing lines of a server-sent event is 4KiB dy
  * default and can be customized by overriding [[EventStreamUnmarshalling.maxLineSize]].
  */
@@ -60,7 +60,9 @@ trait EventStreamUnmarshalling {
     val lineParser = new LineParser(maxLineSize)
     val eventParser = new ServerSentEventParser(maxEventSize)
     def unmarshal(entity: HttpEntity) =
-      entity.withoutSizeLimit.dataBytes
+      entity
+        .withoutSizeLimit // Because of streaming: the server keeps the response open and potentially streams huge amounts of data
+        .dataBytes
         .via(lineParser)
         .via(eventParser)
         .mapMaterializedValue(_ ⇒ NotUsed: NotUsed)
