@@ -2,7 +2,10 @@
  * Copyright (C) 2009-2017 Lightbend Inc. <http://www.lightbend.com>
  */
 
-package akka.http.scaladsl.unmarshalling
+package akka.http
+package scaladsl
+package unmarshalling
+package sse
 
 import akka.actor.ActorSystem
 import akka.stream.{ ActorMaterializer, Materializer }

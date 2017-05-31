@@ -5,11 +5,12 @@
 package akka.http
 package scaladsl
 package marshalling
+package sse
 
 import akka.http.scaladsl.model.HttpEntity
-import akka.stream.scaladsl.Source
 import akka.http.scaladsl.model.MediaTypes.`text/event-stream`
-import akka.http.scaladsl.model.ServerSentEvent
+import akka.http.scaladsl.model.sse.ServerSentEvent
+import akka.stream.scaladsl.Source
 
 /**
  * Importing [[EventStreamMarshalling.toEventStream]] lets a source of [[ServerSentEvent]]s be marshalled to a

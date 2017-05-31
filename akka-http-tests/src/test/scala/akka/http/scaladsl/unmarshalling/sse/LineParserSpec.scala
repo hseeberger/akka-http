@@ -5,6 +5,7 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
 import akka.stream.scaladsl.{ Sink, Source }
 import akka.util.ByteString

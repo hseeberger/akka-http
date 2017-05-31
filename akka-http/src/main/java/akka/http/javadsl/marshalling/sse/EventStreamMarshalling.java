@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package akka.http.javadsl.marshalling;
+package akka.http.javadsl.marshalling.sse;
 
+import akka.http.javadsl.marshalling.Marshaller;
 import akka.http.javadsl.model.RequestEntity;
 import akka.stream.javadsl.Source;
-import akka.http.javadsl.model.ServerSentEvent;
+import akka.http.javadsl.model.sse.ServerSentEvent;
 
 /**
  * Using `eventStreamMarshaller` lets a source of [[ServerSentEvent]]s be marshalled to a `HttpResponse`.

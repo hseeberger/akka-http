@@ -5,7 +5,9 @@
 package akka.http
 package scaladsl
 package model
+package sse
 
+import akka.http.javadsl.model
 import akka.util.ByteString
 import java.nio.charset.StandardCharsets.UTF_8
 import scala.annotation.tailrec
@@ -77,7 +79,7 @@ final case class ServerSentEvent(
   eventType: Option[String] = None,
   id:        Option[String] = None,
   retry:     Option[Int]    = None)
-  extends javadsl.model.ServerSentEvent {
+  extends model.sse.ServerSentEvent {
   import ServerSentEvent._
 
   require(eventType.forall(noNewLine), "eventType must not contain \\n or \\r!")

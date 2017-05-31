@@ -5,11 +5,12 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
 import akka.NotUsed
+import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.stream.scaladsl.Flow
 import akka.util.ByteString
-import akka.http.scaladsl.model.ServerSentEvent
 
 /**
  * Flow that converts raw byte string input into [[ServerSentEvent]]s.

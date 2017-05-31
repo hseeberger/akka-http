@@ -5,12 +5,13 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
 import akka.NotUsed
 import akka.http.scaladsl.model.HttpEntity
-import akka.stream.scaladsl.{ Keep, Source }
 import akka.http.scaladsl.model.MediaTypes.`text/event-stream`
-import akka.http.scaladsl.model.ServerSentEvent
+import akka.http.scaladsl.model.sse.ServerSentEvent
+import akka.stream.scaladsl.{ Keep, Source }
 
 /**
  * Importing [[EventStreamUnmarshalling.fromEventStream]] lets a `HttpEntity` with a `text/event-stream` media type be

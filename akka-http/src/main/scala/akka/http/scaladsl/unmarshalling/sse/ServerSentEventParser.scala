@@ -5,10 +5,11 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
+import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.stream.stage.{ GraphStage, GraphStageLogic, InHandler, OutHandler }
 import akka.stream.{ Attributes, FlowShape, Inlet, Outlet }
-import akka.http.scaladsl.model.ServerSentEvent
 
 private object ServerSentEventParser {
 

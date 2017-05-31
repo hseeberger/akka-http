@@ -5,9 +5,10 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
+import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.stream.scaladsl.{ Sink, Source }
-import akka.http.scaladsl.model.ServerSentEvent
 import org.scalatest.{ AsyncWordSpec, Matchers }
 
 final class ServerSentEventParserSpec extends AsyncWordSpec with Matchers with BaseUnmarshallingSpec {

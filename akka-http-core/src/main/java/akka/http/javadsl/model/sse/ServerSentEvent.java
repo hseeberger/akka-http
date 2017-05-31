@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package akka.http.javadsl.model;
+package akka.http.javadsl.model.sse;
 
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -37,7 +37,7 @@ public abstract class ServerSentEvent {
      * @param data data, may be empty or span multiple lines
      */
     public static ServerSentEvent create(String data) {
-        return akka.http.scaladsl.model.ServerSentEvent.apply(data, stringNone, stringNone, intNone);
+        return akka.http.scaladsl.model.sse.ServerSentEvent.apply(data, stringNone, stringNone, intNone);
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class ServerSentEvent {
      * @param type type, must not contain \n or \r
      */
     public static ServerSentEvent create(String data, String type) {
-        return akka.http.scaladsl.model.ServerSentEvent.apply(data, type);
+        return akka.http.scaladsl.model.sse.ServerSentEvent.apply(data, type);
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class ServerSentEvent {
      * @param id id, must not contain \n or \r
      */
     public static ServerSentEvent create(String data, String type, String id) {
-        return akka.http.scaladsl.model.ServerSentEvent.apply(data, type, id);
+        return akka.http.scaladsl.model.sse.ServerSentEvent.apply(data, type, id);
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class ServerSentEvent {
      * @param retry reconnection delay in milliseconds
      */
     public static ServerSentEvent create(String data, int retry) {
-        return akka.http.scaladsl.model.ServerSentEvent.apply(data, retry);
+        return akka.http.scaladsl.model.sse.ServerSentEvent.apply(data, retry);
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class ServerSentEvent {
                                          Optional<String> type,
                                          Optional<String> id,
                                          OptionalInt retry) {
-        return akka.http.scaladsl.model.ServerSentEvent.apply(
+        return akka.http.scaladsl.model.sse.ServerSentEvent.apply(
                 data, toScala(type), toScala(id), toScala(retry)
         );
     }

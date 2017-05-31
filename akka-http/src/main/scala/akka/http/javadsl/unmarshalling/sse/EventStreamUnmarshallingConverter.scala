@@ -5,16 +5,17 @@
 package akka.http
 package javadsl
 package unmarshalling
+package sse
 
 import akka.NotUsed
 import akka.http.javadsl.model.HttpEntity
+import akka.http.javadsl.model.sse.ServerSentEvent
 import akka.stream.javadsl.Source
-import akka.http.javadsl.model.ServerSentEvent
 
 private object EventStreamUnmarshallingConverter {
 
   final val fromEventStream: Unmarshaller[HttpEntity, Source[ServerSentEvent, NotUsed]] =
-    scaladsl.unmarshalling.EventStreamUnmarshalling.fromEventStream
+    scaladsl.unmarshalling.sse.EventStreamUnmarshalling.fromEventStream
       .map(_.map(_.asInstanceOf[ServerSentEvent]).asJava)
       .asInstanceOf[Unmarshaller[HttpEntity, Source[ServerSentEvent, NotUsed]]]
 }

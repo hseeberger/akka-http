@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package akka.http.javadsl.unmarshalling;
+package akka.http.javadsl.unmarshalling.sse;
 
 import akka.actor.ActorSystem;
 import akka.http.javadsl.model.HttpEntity;
 import akka.stream.ActorMaterializer;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Sink;
-import akka.http.javadsl.model.ServerSentEvent;
-import akka.http.scaladsl.unmarshalling.EventStreamUnmarshallingSpec;
+import akka.http.javadsl.model.sse.ServerSentEvent;
+import akka.http.scaladsl.unmarshalling.sse.EventStreamUnmarshallingSpec;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;

@@ -5,11 +5,12 @@
 package akka.http
 package scaladsl
 package unmarshalling
+package sse
 
 import akka.NotUsed
-import akka.http.javadsl.model
+import akka.http.scaladsl.model.HttpEntity
 import akka.http.scaladsl.model.MediaTypes.`text/event-stream`
-import akka.http.scaladsl.model.{ HttpEntity, ServerSentEvent }
+import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.stream.scaladsl.{ Sink, Source }
 import java.util.{ List ⇒ JList }
 import org.scalatest.{ AsyncWordSpec, Matchers }
@@ -22,9 +23,9 @@ object EventStreamUnmarshallingSpec {
     1.to(666).map(n ⇒ ServerSentEvent(n.toString))
 
   // Also used by EventStreamUnmarshallingTest.java
-  val eventsAsJava: JList[model.ServerSentEvent] = {
+  val eventsAsJava: JList[javadsl.model.sse.ServerSentEvent] = {
     import JavaConverters._
-    events.map(_.asInstanceOf[model.ServerSentEvent]).asJava
+    events.map(_.asInstanceOf[javadsl.model.sse.ServerSentEvent]).asJava
   }
 
   // Also used by EventStreamUnmarshallingTest.java
@@ -33,8 +34,8 @@ object EventStreamUnmarshallingSpec {
 }
 
 final class EventStreamUnmarshallingSpec extends AsyncWordSpec with Matchers with BaseUnmarshallingSpec {
-  import EventStreamUnmarshalling._
   import EventStreamUnmarshallingSpec._
+  import akka.http.scaladsl.unmarshalling.sse.EventStreamUnmarshalling._
 
   "A HTTP entity with media-type text/event-stream" should {
     "be unmarshallable to an EventStream" in {

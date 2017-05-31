@@ -5,6 +5,7 @@
 package akka.http
 package scaladsl
 package model
+package sse
 
 import akka.util.ByteString
 import org.scalatest.prop.GeneratorDrivenPropertyChecks

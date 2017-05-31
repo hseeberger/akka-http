@@ -16,6 +16,8 @@
 
 package akka.http.javadsl.model.headers;
 
+import akka.http.javadsl.model.sse.ServerSentEvent;
+
 /**
  * The Last-Event-ID header is sent by a client to the server to signal the ID of the last sever-sent event received.
  */
@@ -26,7 +28,7 @@ public abstract class LastEventId extends akka.http.scaladsl.model.HttpHeader {
      *
      * @param id ID of the last event, encoded as UTF-8 string
      *
-     * @see akka.http.javadsl.model.ServerSentEvent
+     * @see ServerSentEvent
      */
     public static LastEventId create(String id) {
         return akka.http.scaladsl.model.headers.Last$minusEvent$minusID$.MODULE$.apply(id);

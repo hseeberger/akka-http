@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package akka.http.javadsl.unmarshalling;
+package akka.http.javadsl.unmarshalling.sse;
 
 import akka.NotUsed;
 import akka.http.javadsl.model.HttpEntity;
+import akka.http.javadsl.unmarshalling.Unmarshaller;
 import akka.stream.javadsl.Source;
-import akka.http.javadsl.model.ServerSentEvent;
+import akka.http.javadsl.model.sse.ServerSentEvent;
 
 /**
  * Using `fromEventStream` lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of

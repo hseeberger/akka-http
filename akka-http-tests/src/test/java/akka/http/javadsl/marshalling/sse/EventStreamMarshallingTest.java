@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package akka.http.javadsl.marshalling;
+package akka.http.javadsl.marshalling.sse;
 
+import akka.http.javadsl.marshalling.sse.EventStreamMarshalling;
 import akka.http.javadsl.server.Route;
 import akka.http.javadsl.testkit.JUnitRouteTest;
 import akka.http.javadsl.testkit.TestRouteResult;
@@ -24,8 +25,7 @@ import akka.util.ByteString;
 import java.util.ArrayList;
 import java.util.List;
 
-import akka.http.javadsl.marshalling.EventStreamMarshalling;
-import akka.http.javadsl.model.ServerSentEvent;
+import akka.http.javadsl.model.sse.ServerSentEvent;
 import org.junit.Test;
 import static akka.http.javadsl.model.HttpRequest.GET;
 import static akka.http.javadsl.model.MediaTypes.TEXT_EVENT_STREAM;
@@ -41,7 +41,7 @@ public class EventStreamMarshallingTest extends JUnitRouteTest {
 
         final ByteString expectedEntity = events
                 .stream()
-                .map(e -> ((akka.http.scaladsl.model.ServerSentEvent) e).encode())
+                .map(e -> ((akka.http.scaladsl.model.sse.ServerSentEvent) e).encode())
                 .reduce(ByteString.empty(), ByteString::concat);
         final TestRouteResult routeResult = testRoute(route).run(GET("/"));
         routeResult.assertMediaType(TEXT_EVENT_STREAM);
