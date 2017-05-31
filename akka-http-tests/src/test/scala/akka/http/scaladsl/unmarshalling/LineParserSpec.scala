@@ -32,6 +32,12 @@ final class LineParserSpec extends AsyncWordSpec with Matchers with BaseUnmarsha
         .via(new LineParser(1048576))
         .runWith(Sink.seq)
         .map(_ shouldBe Vector("line1", "line2", "line3", "line4", "line5", "line6", ""))
+
+      Source
+        .single(ByteString("line1\r"))
+        .via(new LineParser(1048576))
+        .runWith(Sink.seq)
+        .map(_ shouldBe Vector("line1"))
     }
 
     "ignore a trailing non-terminated line" in {

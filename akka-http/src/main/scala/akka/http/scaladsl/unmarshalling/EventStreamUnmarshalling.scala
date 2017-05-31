@@ -20,7 +20,7 @@ package unmarshalling
 
 import akka.NotUsed
 import akka.http.scaladsl.model.HttpEntity
-import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.{ Keep, Source }
 import akka.http.scaladsl.model.MediaTypes.`text/event-stream`
 import akka.http.scaladsl.model.ServerSentEvent
 
@@ -64,8 +64,7 @@ trait EventStreamUnmarshalling {
         .withoutSizeLimit // Because of streaming: the server keeps the response open and potentially streams huge amounts of data
         .dataBytes
         .via(lineParser)
-        .via(eventParser)
-        .mapMaterializedValue(_ ⇒ NotUsed: NotUsed)
+        .viaMat(eventParser)(Keep.none)
     Unmarshaller.strict(unmarshal).forContentTypes(`text/event-stream`)
   }
 }

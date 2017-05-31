@@ -90,7 +90,7 @@ private object ServerSentEventParser {
 
   private final val Retry = "retry"
 
-  private val field = """([^:]+): ?(.*)""".r
+  private val Field = """([^:]+): ?(.*)""".r
 }
 
 private final class ServerSentEventParser(maxEventSize: Int) extends GraphStage[FlowShape[String, ServerSentEvent]] {
@@ -118,10 +118,10 @@ private final class ServerSentEventParser(maxEventSize: Int) extends GraphStage[
         } else if (builder.size + line.length <= maxEventSize) {
           line match {
             case Id                                    ⇒ builder.setId("")
-            case field(Data, data) if data.nonEmpty    ⇒ builder.appendData(data)
-            case field(EventType, t) if t.nonEmpty     ⇒ builder.setType(t)
-            case field(Id, id)                         ⇒ builder.setId(id)
-            case field(Retry, s @ PosInt(r)) if r >= 0 ⇒ builder.setRetry(r, s.length)
+            case Field(Data, data) if data.nonEmpty    ⇒ builder.appendData(data)
+            case Field(EventType, t) if t.nonEmpty     ⇒ builder.setType(t)
+            case Field(Id, id)                         ⇒ builder.setId(id)
+            case Field(Retry, s @ PosInt(r)) if r >= 0 ⇒ builder.setRetry(r, s.length)
             case _                                     ⇒ // ignore according to spec
           }
           pull(in)
