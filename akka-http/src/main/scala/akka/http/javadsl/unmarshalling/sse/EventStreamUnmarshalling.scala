@@ -12,9 +12,16 @@ import akka.http.javadsl.model.HttpEntity
 import akka.http.javadsl.model.sse.ServerSentEvent
 import akka.stream.javadsl.Source
 
-private object EventStreamUnmarshallingConverter {
+/**
+ * Using `fromEventStream` lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of
+ * `ServerSentEvent`s.
+ */
+object EventStreamUnmarshalling {
 
-  final val fromEventStream: Unmarshaller[HttpEntity, Source[ServerSentEvent, NotUsed]] =
+  /**
+   * Lets a `HttpEntity` with a `text/event-stream` media type be unmarshalled to a source of `ServerSentEvent`s.
+   */
+  def fromEventStream(): Unmarshaller[HttpEntity, Source[ServerSentEvent, NotUsed]] =
     scaladsl.unmarshalling.sse.EventStreamUnmarshalling.fromEventStream
       .map(_.map(_.asInstanceOf[ServerSentEvent]).asJava)
       .asInstanceOf[Unmarshaller[HttpEntity, Source[ServerSentEvent, NotUsed]]]
