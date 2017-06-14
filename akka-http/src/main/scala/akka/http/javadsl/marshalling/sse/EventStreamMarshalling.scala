@@ -7,6 +7,7 @@ package javadsl
 package marshalling
 package sse
 
+import akka.NotUsed
 import akka.http.javadsl.model.RequestEntity
 import akka.http.javadsl.model.sse.ServerSentEvent
 import akka.stream.javadsl.Source
@@ -19,8 +20,8 @@ object EventStreamMarshalling {
   /**
    * Lets a source of [[ServerSentEvent]]s be marshalled to a `HttpResponse`.
    */
-  def toEventStream[T]: Marshaller[Source[ServerSentEvent, T], RequestEntity] = {
-    def asScala(eventStream: Source[ServerSentEvent, T]) =
+  val toEventStream: Marshaller[Source[ServerSentEvent, NotUsed], RequestEntity] = {
+    def asScala(eventStream: Source[ServerSentEvent, NotUsed]) =
       eventStream.asScala.map(_.asInstanceOf[scaladsl.model.sse.ServerSentEvent])
     Marshaller.fromScala(scaladsl.marshalling.sse.EventStreamMarshalling.toEventStream.compose(asScala))
   }
